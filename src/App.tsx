@@ -1,27 +1,32 @@
 import React, { useState, useEffect } from "react";
 import FactDisplay from "./FactDisplay";
+import "./App.css";
 
-interface CatFact {
-  fact: string;
+// Define the new Joke interface
+interface Joke {
+  type: string;
+  setup: string;
+  punchline: string;
+  id: number;
 }
 
 const App: React.FC = () => {
-  const [fact, setFact] = useState<string>("");
+  const [joke, setJoke] = useState<Joke | null>(null);
 
-  const fetchFact = () => {
-    fetch("https://catfact.ninja/fact")
+  const fetchJoke = () => {
+    fetch("https://official-joke-api.appspot.com/random_joke")
       .then((response) => response.json())
-      .then((data: CatFact) => setFact(data.fact));
+      .then((data: Joke) => setJoke(data));
   };
 
   useEffect(() => {
-    fetchFact();
+    fetchJoke();
   }, []);
 
   return (
-    <div>
-      <h1>🐱 Random Cat Fact 🐱</h1>
-      <FactDisplay fact={fact} fetchFact={fetchFact} />
+    <div className="app-container">
+      <h1>😂 Random Programming Joke 😂</h1>
+      <FactDisplay joke={joke} fetchJoke={fetchJoke} />
     </div>
   );
 };
